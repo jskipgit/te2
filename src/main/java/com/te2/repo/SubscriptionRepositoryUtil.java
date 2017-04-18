@@ -22,7 +22,7 @@ public class SubscriptionRepositoryUtil {
      */
     public static Collection<SubscriptionStats> convert(List<Object[]> results, Subscription s){
         return results.stream()
-                .filter(type -> s.getSubs().contains(MessageType.valueOf(type[0].toString())))
+                .filter(type -> s.getTypes().contains(MessageType.valueOf(type[0].toString())))
                 .map(type -> new SubscriptionStats(MessageType.valueOf(type[0].toString()),
                         Long.parseLong(type[1].toString())))
                 .collect(Collectors.toList());

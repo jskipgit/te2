@@ -20,6 +20,13 @@
             <artifactId>h2</artifactId>
             <version>1.4.194</version>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        -->
         <!-- JSON parsing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -55,13 +55,13 @@ public class SubscriptionRepositoryTest {
 
         // save a subscription with one message type
         Subscription s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.NEWS));
+        s.setTypes(Arrays.asList(MessageType.NEWS));
         subscriptionRepository.save(s);
 
         //fetch
         Subscription fromDb = subscriptionRepository.findOne(s.getId());
         PageRequest p = new PageRequest(0, 10);
-        Page<Message> results = messageRepository.fetchMessagesByType(fromDb.getSubs(), p);
+        Page<Message> results = messageRepository.fetchMessagesByType(fromDb.getTypes(), p);
 
         // validate
         assertNotNull("Simple save and fetch failed", results);
@@ -75,41 +75,39 @@ public class SubscriptionRepositoryTest {
     @Test
     public void getMessagesBySubscriptionStats() throws Exception {
 
-        // Save TWO messages
-
         // save a subscription with one message type
         Subscription s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.MOVIE_RELEASE));
+        s.setTypes(Arrays.asList(MessageType.MOVIE_RELEASE));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.MOVIE_RELEASE));
+        s.setTypes(Arrays.asList(MessageType.MOVIE_RELEASE));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.MOVIE_RELEASE));
+        s.setTypes(Arrays.asList(MessageType.MOVIE_RELEASE));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.MOVIE_RELEASE, MessageType.NEW_HIRES));
+        s.setTypes(Arrays.asList(MessageType.MOVIE_RELEASE, MessageType.NEW_HIRES));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.NEW_HIRES));
+        s.setTypes(Arrays.asList(MessageType.NEW_HIRES));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.TRANSIT_UPDATES));
+        s.setTypes(Arrays.asList(MessageType.TRANSIT_UPDATES));
         subscriptionRepository.save(s);
 
         s = new Subscription();
-        s.setSubs(Arrays.asList(MessageType.NEW_HIRES, MessageType.MOVIE_RELEASE, MessageType.PRIORITY));
+        s.setTypes(Arrays.asList(MessageType.NEW_HIRES, MessageType.MOVIE_RELEASE, MessageType.PRIORITY));
         subscriptionRepository.save(s);
 
         //fetch
         Subscription fromDb = subscriptionRepository.findOne(s.getId());
         PageRequest p = new PageRequest(0, 10);
-        Page<Message> results = messageRepository.fetchMessagesByType(fromDb.getSubs(), p);
+        Page<Message> results = messageRepository.fetchMessagesByType(fromDb.getTypes(), p);
 
         // validate
         List<Object[]> stats = subscriptionRepository.getSubscriptionStats();
@@ -120,7 +118,7 @@ public class SubscriptionRepositoryTest {
                 .convert(stats, s);
 
         assertNotNull("Stats 404", finalStats);
-        assertEquals("Incorrect stat count", fromDb.getSubs().size(), finalStats.size());
+        assertEquals("Incorrect stat count", fromDb.getTypes().size(), finalStats.size());
         assertEquals("Incorrect stat for Movies", 5, finalStats.stream().filter( stat -> stat.getType().equals(MessageType.MOVIE_RELEASE))
                 .mapToLong(stat -> stat.getReadCount())
                 .sum());

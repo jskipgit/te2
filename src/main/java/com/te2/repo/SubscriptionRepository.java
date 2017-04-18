@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface SubscriptionRepository extends PagingAndSortingRepository<Subscription, Long> {
 
-       @Query(value = "select  subs, count(*) from subscription_subs  GROUP BY subs", nativeQuery = true)
+       @Query(value = "select  types, count(*) from subscription_types  GROUP BY types", nativeQuery = true)
        List<Object[]> getSubscriptionStats();
 }

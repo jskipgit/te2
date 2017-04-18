@@ -1,7 +1,5 @@
 package com.te2.data;
 
-import org.hibernate.annotations.Fetch;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,9 +12,11 @@ public class Subscription {
     @GeneratedValue
     private long id;
 
+    private String name;
+
     @ElementCollection(targetClass=MessageType.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<MessageType> subs;
+    private List<MessageType> types;
 
     public long getId() {
         return id;
@@ -26,11 +26,19 @@ public class Subscription {
         this.id = id;
     }
 
-    public List<MessageType> getSubs() {
-        return subs;
+    public List<MessageType> getTypes() {
+        return types;
     }
 
-    public void setSubs(List<MessageType> subs) {
-        this.subs = subs;
+    public void setTypes(List<MessageType> types) {
+        this.types = types;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

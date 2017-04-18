@@ -7,6 +7,7 @@ import com.te2.exception.SubscriptionNotFoundException;
 import com.te2.repo.MessageRepository;
 import com.te2.repo.SubscriptionRepository;
 import com.te2.repo.SubscriptionRepositoryUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class SubscriptionController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Subscription create(@RequestBody Subscription postMe) {
-        log.debug("Somebody just made a new subscription to:"+postMe.getSubs());
+        log.debug("Somebody just made a new subscription to:"+postMe.getTypes());
         return subscriptionRepository.save(postMe);
     }
 
@@ -47,7 +48,7 @@ public class SubscriptionController {
     public Subscription update(@RequestBody  Subscription postMe) {
         Subscription fromDb = subscriptionRepository.findOne(postMe.getId());
         if(fromDb != null){
-            fromDb.setSubs(postMe.getSubs());
+            fromDb.setTypes(postMe.getTypes());
             subscriptionRepository.save(fromDb);
             log.debug("Somebody just made an update to:"+fromDb.getId());
         } else {
@@ -59,11 +60,16 @@ public class SubscriptionController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public SubscriptionRead read(@RequestParam Long subscriptionId,
+    public SubscriptionRead read(@ApiParam(value = "This is the id field found in the Subscription object.  You can obtain this by calling either LIST (all) Subscriptions or in the response to a CREATE Subscription.")
+                                 @RequestParam Long subscriptionId,
+                                 @ApiParam(value = "Specify which page of data you want, this is zero-based.")
                                  @RequestParam Integer page,
-                                 @RequestParam Integer size,
-                                 @RequestParam(required = false) String sortby,
-                                 @RequestParam(required = false) Sort.Direction direction){
+                                 @ApiParam(value = "Specify the size of a page of data.")
+                                     @RequestParam Integer size,
+                                 @ApiParam(value = "Specify which attribute of message should be used to sort.  Valid options are: creationDate (default), id, content, and type.")
+                                     @RequestParam(required = false) String sortby,
+                                 @ApiParam(value = "Specify sort direction.  Default is DESC.")
+                                     @RequestParam(required = false) Sort.Direction direction){
         Subscription sub = subscriptionRepository.findOne(subscriptionId);
 
         if(sub != null) {
@@ -72,11 +78,11 @@ public class SubscriptionController {
             }
 
             if (direction == null) {
-                direction = Sort.Direction.ASC;
+                direction = Sort.Direction.DESC;
             }
             Sort s = new Sort(direction, sortby);
             PageRequest pr = new PageRequest(page, size, s);
-            Page<Message> messsages = messageRepository.fetchMessagesByType(sub.getSubs(), pr);
+            Page<Message> messsages = messageRepository.fetchMessagesByType(sub.getTypes(), pr);
             List<Object[]> stats = subscriptionRepository.getSubscriptionStats();
 
             // pack response object
