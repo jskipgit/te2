@@ -53,6 +53,7 @@ public class SubscriptionController {
         Subscription fromDb = subscriptionRepository.findOne(postMe.getId());
         if(fromDb != null){
             fromDb.setTypes(postMe.getTypes());
+            fromDb.setName(postMe.getName());
             subscriptionRepository.save(fromDb);
             log.debug("Somebody just made an update to:"+fromDb.getId());
         } else {
