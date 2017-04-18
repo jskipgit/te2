@@ -1,6 +1,7 @@
 package com.te2.controller;
 
 import com.te2.data.Message;
+import com.te2.exception.MessageMustHaveTypeException;
 import com.te2.repo.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class MessageController {
     public Message create(@RequestBody Message postMe) {
         log.debug("this is the start of the method!");
         postMe.setCreationDate(new Date());
+        if(postMe.getType() == null){
+            throw new MessageMustHaveTypeException();
+        }
         return messageRepository.save(postMe);
     }
 }
