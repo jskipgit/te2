@@ -1,6 +1,8 @@
 package com.te2.controller;
 
 import com.te2.data.Message;
+import com.te2.dto.DTOMessage;
+import com.te2.exception.MessageMustHaveContentException;
 import com.te2.exception.MessageMustHaveTypeException;
 import com.te2.repo.MessageRepository;
 import org.slf4j.Logger;
@@ -24,13 +26,21 @@ public class MessageController {
     private MessageRepository messageRepository;
 
     @RequestMapping(value = "messages", method = RequestMethod.POST)
-    public Message create(@RequestBody Message postMe) {
-        log.debug("this is the start of the method!");
-        postMe.setCreationDate(new Date());
+    public Message create(@RequestBody DTOMessage postMe) {
+        log.debug("create message called with:"+postMe);
         if(postMe.getType() == null){
             throw new MessageMustHaveTypeException();
         }
-        return messageRepository.save(postMe);
+
+        if(postMe.getContent() == null || postMe.getContent().length() == 0){
+            throw new MessageMustHaveContentException();
+        }
+
+        Message msg = new Message();
+        msg.setCreationDate(new Date());
+        msg.setContent(postMe.getContent());
+        msg.setType(postMe.getType());
+        return messageRepository.save(msg);
     }
 }
 

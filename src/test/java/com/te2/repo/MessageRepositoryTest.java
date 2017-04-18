@@ -37,8 +37,8 @@ public class MessageRepositoryTest {
 
         //validate
         assertNotNull("Simple save and fetch failed", foundFromDb);
-        assertEquals("Message content mis-match",m.getContent(),foundFromDb.getContent());
-        assertEquals("Message creation date mis-match",m.getCreationDate(),foundFromDb.getCreationDate());
+        assertEquals("DTOMessage content mis-match",m.getContent(),foundFromDb.getContent());
+        assertEquals("DTOMessage creation date mis-match",m.getCreationDate(),foundFromDb.getCreationDate());
     }
 
 }

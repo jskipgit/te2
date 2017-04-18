@@ -15,7 +15,7 @@ public class SubscriptionRepositoryUtil {
 
     /**
      * This is a utility method for taking a list of results from a generic list of objects to a filtered
-     * collection of Subscription Stats pertaining to all the Message Types found within those of the supplied subscption.
+     * collection of Subscription Stats pertaining to all the DTOMessage Types found within those of the supplied subscption.
      * @param results
      * @param s
      * @return

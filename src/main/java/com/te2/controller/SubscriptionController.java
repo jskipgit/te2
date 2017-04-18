@@ -2,6 +2,7 @@ package com.te2.controller;
 
 import com.te2.data.Message;
 import com.te2.data.Subscription;
+import com.te2.dto.DTOSubscription;
 import com.te2.dto.SubscriptionRead;
 import com.te2.exception.SubscriptionNotFoundException;
 import com.te2.repo.MessageRepository;
@@ -39,9 +40,12 @@ public class SubscriptionController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Subscription create(@RequestBody Subscription postMe) {
+    public Subscription create(@RequestBody DTOSubscription postMe) {
         log.debug("Somebody just made a new subscription to:"+postMe.getTypes());
-        return subscriptionRepository.save(postMe);
+        Subscription newSub = new Subscription();
+        newSub.setName(postMe.getName());
+        newSub.setTypes(postMe.getTypes());
+        return subscriptionRepository.save(newSub);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
