@@ -1,0 +1,7 @@
+{
+  "name": "TE2 Messaging Service",
+  "description": "Interview Homework",
+  "website": "http://404.com",
+  "repository": "https://github.com/jskipgit",
+  "image": "heroku/java"
+}
